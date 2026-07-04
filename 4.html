@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sweet Blue Message</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', 'Segoe UI', sans-serif; }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body { 
+  background: linear-gradient(135deg, #a8d8ff 0%, #dbeeff 50%, #eef7ff 100%);
+  color: #2a3f54; 
+  overflow-y: auto;
+}
+
+/* BASE LAYERS */
+.layer {
+  position: absolute;
+  top: 0; left: 0; width: 100%; min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center; padding: 40px 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  overflow-y: auto;
+}
+.layer.active {
+  opacity: 1; pointer-events: all; transform: scale(1);
+}
+.layer.exit {
+  opacity: 0; transform: scale(0.95);
+}
+
+/* INTRO */
+#intro { 
+  background: linear-gradient(135deg, #87ceeb 0%, #b0e0ff 100%); 
+  z-index: 100; 
+}
+#intro h1 {
+  font-size: 2.6rem; 
+  color: #fff; 
+  text-shadow: 0 0 20px rgba(255,255,255,0.8);
+  animation: sweetFloat 3s ease-in-out infinite;
+}
+@keyframes sweetFloat {
+ 0%, 100% { transform: translateY(0) scale(1); }
+ 50% { transform: translateY(-10px) scale(1.03); }
+}
+
+/* CARD */
+.card {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(173, 216, 230, 0.5);
+  border-radius: 25px;
+  padding: 35px;
+  max-width: 550px;
+  box-shadow: 0 8px 30px rgba(135, 206, 235, 0.3);
+}
+.message {
+  font-size: 1.15rem; 
+  color: #3a4f66; 
+  line-height: 1.9; 
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+.sender {
+  font-size: 0.95rem; 
+  color: #5a8fb8; 
+  margin-bottom: 25px;
+  font-style: italic;
+}
+
+/* OVERLAY */
+.overlay {
+  background: rgba(200, 230, 255, 0.85); 
+  backdrop-filter: blur(15px);
+  z-index: 50;
+}
+
+/* TEXT + BUTTONS */
+.question { 
+  font-size: 1.5rem; 
+  margin-bottom: 30px; 
+  color: #2a3f54; 
+  max-width: 420px; 
+  line-height: 1.6;
+  font-weight: 600;
+}
+.btn {
+  background: linear-gradient(135deg, #87ceeb 0%, #6ab7e8 100%);
+  color: #fff; 
+  padding: 14px 35px; 
+  border: none; 
+  border-radius: 50px;
+  font-weight: 600; 
+  font-size: 1rem; 
+  cursor: pointer; 
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(106, 183, 232, 0.4);
+  transition: 0.3s;
+}
+.btn:hover { 
+  background: linear-gradient(135deg, #6ab7e8 0%, #4da3df 100%);
+  box-shadow: 0 6px 20px rgba(106, 183, 232, 0.6); 
+  transform: translateY(-3px) scale(1.03); 
+}
+</style>
+</head>
+<body>
+
+<!-- 1. INTRO -->
+<div class="layer active" id="intro">
+  <h1>A small info</h1>
+</div>
+
+<!-- 2. ARE YOU SURE -->
+<div class="layer overlay" id="overlay1">
+  <div class="card">
+    <p class="question">Are you sure you want to read this?</p>
+    <button class="btn" onclick="goTo('overlayWarning')">Continue</button>
+  </div>
+</div>
+
+<!-- 3. WARNING -->
+<div class="layer overlay" id="overlayWarning">
+  <div class="card">
+    <p class="question">This might be too risky to share...</p>
+    <button class="btn" onclick="goToHome()">Continue</button>
+  </div>
+</div>
+
+<!-- 4. MAIN MESSAGE -->
+<div class="layer" id="homepage">
+  <div class="card">
+    <div class="message">
+      
+      Stop forcing yourself to fit into a man's standards. If you're truly meant for that man, putting in effort will never feel like a struggle.
+      
+      
+    </div>
+    
+    <div class="message">
+      
+      
+      And also... I didn't mean to say this, but I think I need to get it out so I can finally breathe. The reason I'm still talking to you is... it's obvious, isn't it? I still have all these feelings flowing inside me.
+      
+    </div>
+    <div class="sender">TOO RISKY TO SHAREEEEE</div>
+  </div>
+</div>
+
+<script>
+// Intro -> Overlay1 after 3s
+setTimeout(() => {
+  goTo('overlay1');
+}, 3000);
+
+function goTo(id) {
+  const current = document.querySelector('.layer.active');
+  if(current) {
+    current.classList.add('exit');
+    current.classList.remove('active');
+  }
+  setTimeout(() => {
+    document.querySelectorAll('.layer').forEach(l => l.classList.remove('exit'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+  }, 800);
+}
+
+function goToHome() {
+  const current = document.querySelector('.layer.active');
+  current.classList.add('exit');
+  current.classList.remove('active');
+  setTimeout(() => {
+    document.querySelectorAll('.layer').forEach(l => l.classList.remove('exit'));
+    document.getElementById('homepage').classList.add('active');
+  }, 800);
+}
+</script>
+</body>
+</html>
